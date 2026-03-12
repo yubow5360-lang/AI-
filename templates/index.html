@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 学习系统</title>
+    <meta name="app-base" content="{{ request.scope.get('root_path', '') }}/">
+    <meta name="theme-color" content="#0d9488">
+    <link rel="manifest" href="/static/manifest.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="app-header">
+        <div class="app-header-inner">
+            <div class="app-logo" aria-hidden="true">
+                <img src="/static/cat-logo.png" alt="AI 学习系统" class="app-logo-img">
+            </div>
+            <h1 class="app-title">AI 学习系统</h1>
+            <div class="auth-bar">
+                <span id="auth-username" class="auth-username"></span>
+                <button type="button" class="btn btn-secondary auth-btn" id="btn-install-app" style="display:none;">安装到手机</button>
+                <button type="button" class="btn btn-secondary auth-btn" id="btn-open-auth">登录 / 注册</button>
+                <button type="button" class="btn btn-secondary auth-btn" id="btn-logout" style="display:none;">退出</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="auth-modal" id="auth-modal">
+        <div class="auth-dialog card">
+            <h2 class="card-title">登录 / 注册</h2>
+            <div class="form-row">
+                <input type="text" id="auth-username-input" placeholder="用户名">
+                <input type="password" id="auth-password-input" placeholder="密码">
+            </div>
+            <div class="auth-actions">
+                <button type="button" class="btn btn-primary" id="btn-auth-login">登录</button>
+                <button type="button" class="btn btn-secondary" id="btn-auth-register">注册并登录</button>
+                <button type="button" class="btn btn-secondary" id="btn-auth-close">取消</button>
+            </div>
+            <div class="auth-error" id="auth-error"></div>
+        </div>
+    </div>
+
+    <main class="main main-wide">
+        <!-- 效率统计 Chart.js -->
+        <section class="card card-stats">
+            <h2 class="card-title">学习效率统计</h2>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <span class="stat-value" id="stat-total">0</span>
+                    <span class="stat-label">总任务数</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value" id="stat-done">0</span>
+                    <span class="stat-label">已完成</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value" id="stat-rate">0%</span>
+                    <span class="stat-label">完成率</span>
+                </div>
+            </div>
+            <div class="chart-wrap"><canvas id="chart"></canvas></div>
+        </section>
+
+        <section class="card">
+            <h2 class="card-title">数据分析系统</h2>
+            <div class="stats-row analytics-row">
+                <div class="stat-box">
+                    <span class="stat-value" id="eff-completion">0%</span>
+                    <span class="stat-label">完成率</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value" id="eff-focus">0</span>
+                    <span class="stat-label">专注度</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value" id="eff-delay">0</span>
+                    <span class="stat-label">拖延指数</span>
+                </div>
+            </div>
+            <div class="form-row">
+                <button type="button" class="btn btn-secondary" id="btn-weekly-report">学习周报</button>
+                <button type="button" class="btn btn-secondary" id="btn-monthly-report">学习月报</button>
+            </div>
+            <div class="review-box" id="report-content"></div>
+        </section>
+
+        <!-- 任务列表 + 日历 两栏 -->
+        <div class="two-col">
+            <section class="card">
+                <h2 class="card-title">任务管理</h2>
+                <ul class="task-list" id="task-list">
+                    <li class="empty-msg">暂无任务</li>
+                </ul>
+                <div class="form-row">
+                    <input type="text" id="task-title" placeholder="新任务标题">
+                    <button type="button" class="btn btn-secondary" id="btn-add">添加</button>
+                </div>
+            </section>
+            <section class="card">
+                <h2 class="card-title">日历</h2>
+                <div id="calendar"></div>
+            </section>
+        </div>
+
+        <!-- AI 学习计划 + 长期目标 -->
+        <div class="two-col">
+            <section class="card">
+                <h2 class="card-title">AI 生成学习计划</h2>
+                <p class="section-desc">输入目标，AI 拆解为可执行任务并写入数据库</p>
+                <div class="form-row">
+                    <input type="text" id="goal" placeholder="例如：本周掌握 Python 基础">
+                    <button type="button" class="btn btn-primary" id="btn-plan">生成计划</button>
+                </div>
+            </section>
+            <section class="card">
+                <h2 class="card-title">长期目标</h2>
+                <p class="section-desc">设置长期目标，AI 自动拆解为阶段任务</p>
+                <div class="form-row">
+                    <input type="text" id="goal-long" placeholder="例如：三个月通过英语四级">
+                    <button type="button" class="btn btn-primary" id="btn-goal">拆解目标</button>
+                </div>
+                <ul class="goal-list" id="goal-list"></ul>
+            </section>
+        </div>
+
+        <!-- AI 每日复盘 -->
+        <section class="card">
+            <h2 class="card-title">AI 每日复盘</h2>
+            <p class="section-desc">根据当天任务生成：今日复盘、效率分析、明日计划</p>
+            <button type="button" class="btn btn-primary" id="btn-review">生成复盘</button>
+            <div class="review-three">
+                <div class="review-block">
+                    <h3>今日复盘</h3>
+                    <div class="review-box" id="review-summary"></div>
+                </div>
+                <div class="review-block">
+                    <h3>效率分析</h3>
+                    <div class="review-box" id="review-efficiency"></div>
+                </div>
+                <div class="review-block">
+                    <h3>明日计划</h3>
+                    <div class="review-box" id="review-tomorrow"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 番茄钟 + 提醒 -->
+        <div class="two-col">
+            <section class="card card-pomodoro">
+                <h2 class="card-title">番茄钟</h2>
+                <p class="section-desc">25 分钟专注学习</p>
+                <div class="pomodoro-display" id="pomodoro-display">25:00</div>
+                <div class="pomodoro-actions">
+                    <button type="button" class="btn btn-primary" id="btn-pomo-start">开始</button>
+                    <button type="button" class="btn btn-secondary" id="btn-pomo-stop">暂停</button>
+                </div>
+            </section>
+            <section class="card">
+                <h2 class="card-title">提醒</h2>
+                <p class="section-desc">开启浏览器通知，番茄钟结束或任务提醒将推送</p>
+                <button type="button" class="btn btn-secondary" id="btn-notify">开启通知</button>
+            </section>
+        </div>
+
+        <!-- 作业管理 -->
+        <section class="card">
+            <h2 class="card-title">作业管理</h2>
+            <p class="section-desc">上传文件，记录文件名</p>
+            <div class="form-row">
+                <input type="file" id="file-input" multiple>
+                <button type="button" class="btn btn-primary" id="btn-upload">上传</button>
+            </div>
+            <ul class="assignment-list" id="assignment-list"></ul>
+        </section>
+
+        <!-- AI 学习教练 -->
+        <section class="card">
+            <h2 class="card-title">AI 学习教练</h2>
+            <p class="section-desc">根据任务完成情况，AI 给出学习建议</p>
+            <button type="button" class="btn btn-primary" id="btn-coach">获取建议</button>
+            <div class="review-box coach-box" id="coach-content"></div>
+        </section>
+
+        <section class="card">
+            <h2 class="card-title">AI Agent 扩展</h2>
+            <p class="section-desc">自动规划任务、自动提醒、自动总结、自动调整计划</p>
+            <div class="form-row agent-plan-row">
+                <input type="text" id="agent-goal" placeholder="输入一个学习目标，例如：两周完成线代复习">
+                <button type="button" class="btn btn-primary" id="btn-agent-plan">自动规划</button>
+            </div>
+            <div class="form-row agent-action-row">
+                <button type="button" class="btn btn-secondary" id="btn-agent-reminders">自动提醒</button>
+                <button type="button" class="btn btn-secondary" id="btn-agent-summary">自动总结</button>
+                <button type="button" class="btn btn-secondary" id="btn-agent-adjust">自动调整计划</button>
+            </div>
+            <div class="review-box" id="agent-output"></div>
+        </section>
+
+        <section class="card">
+            <h2 class="card-title">团队协作扩展</h2>
+            <p class="section-desc">学习小组、团队任务、项目协作（Notion 风格基础版）</p>
+            <div class="form-row team-row team-row-create">
+                <input type="text" id="group-name" placeholder="新建学习小组名称">
+                <button type="button" class="btn btn-primary" id="btn-group-create">创建小组</button>
+            </div>
+            <div class="form-row team-row team-row-member">
+                <select id="group-select">
+                    <option value="">请选择小组</option>
+                </select>
+                <input type="text" id="group-member-username" placeholder="添加成员用户名">
+                <button type="button" class="btn btn-secondary" id="btn-group-add-member">添加成员</button>
+            </div>
+            <div class="form-row team-row team-row-task">
+                <input type="text" id="team-task-title" placeholder="团队任务标题">
+                <input type="text" id="team-task-assignee" placeholder="指派给（用户名，可选）">
+                <button type="button" class="btn btn-secondary" id="btn-team-task-create">创建团队任务</button>
+            </div>
+            <div class="team-grid">
+                <div>
+                    <h3 class="section-mini-title">小组成员</h3>
+                    <ul class="goal-list" id="group-member-list"></ul>
+                </div>
+                <div>
+                    <h3 class="section-mini-title">团队任务</h3>
+                    <ul class="goal-list" id="team-task-list"></ul>
+                </div>
+            </div>
+            <div class="auth-error" id="team-error"></div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/locales/zh-cn.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>

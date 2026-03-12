@@ -1,0 +1,30 @@
+services:
+  app:
+    build: .
+    container_name: ai_study_app
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./tasks.db:/app/tasks.db
+      - ./uploads:/app/uploads
+
+  caddy:
+    image: caddy:2
+    container_name: ai_study_caddy
+    restart: unless-stopped
+    depends_on:
+      - app
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

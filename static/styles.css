@@ -1,0 +1,611 @@
+/* AI 学习系统 - 产品级样式 */
+:root {
+  --bg-page: #f5f3ef;
+  --bg-card: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #5c5c5c;
+  --accent: #0d9488;
+  --accent-hover: #0f766e;
+  --accent-soft: rgba(13, 148, 136, 0.12);
+  --border: #e5e2dc;
+  --radius: 12px;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+/* 顶部栏 */
+.app-header {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.app-header-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.app-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.app-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.app-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.auth-bar {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.auth-username {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.auth-btn {
+  padding-inline: 0.75rem;
+  font-size: 0.75rem;
+}
+
+/* 主内容区 */
+.main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 卡片通用 */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--border);
+}
+
+.card-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 1rem 0;
+}
+
+/* 任务列表 */
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-list li {
+  padding: 0.75rem 1rem;
+  background: var(--bg-page);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  font-size: 0.9375rem;
+  border-left: 3px solid var(--accent);
+}
+
+.task-list li:last-child {
+  margin-bottom: 0;
+}
+
+.task-list.empty li {
+  border-left-color: var(--border);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.task-list:not(.empty) li.empty-msg {
+  display: none;
+}
+
+/* 表单组 */
+.form-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.form-row input {
+  flex: 1;
+  min-width: 180px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  background: var(--bg-card);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-row select {
+  flex: 1;
+  min-width: 180px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  background: var(--bg-card);
+}
+
+.form-row input::placeholder {
+  color: #9ca3af;
+}
+
+.form-row input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+/* 按钮 */
+.btn {
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.btn-secondary {
+  background: var(--bg-page);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--border);
+}
+
+/* 复盘区域 */
+.review-box {
+  min-height: 120px;
+  padding: 1rem;
+  background: var(--bg-page);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.review-box:empty::before {
+  content: "点击「生成复盘」后，AI 会根据今日任务生成学习复盘…";
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.review-loading::after {
+  content: "";
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-left: 0.25rem;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 区块标题与说明 */
+.section-desc {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin: -0.5rem 0 0.75rem 0;
+}
+
+/* 主内容加宽（日历/统计用） */
+.main-wide {
+  max-width: 960px;
+}
+
+/* 两栏布局 */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 720px) {
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 任务项：复选框 + 删除 */
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: var(--bg-page);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  border-left: 3px solid var(--accent);
+}
+
+.task-item:last-child {
+  margin-bottom: 0;
+}
+
+.task-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  flex: 1;
+  min-width: 0;
+}
+
+.task-check input {
+  flex-shrink: 0;
+}
+
+.task-title.done {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+.btn-icon {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+}
+
+.btn-icon:hover {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.btn-delete {
+  flex-shrink: 0;
+}
+
+/* 统计卡片 */
+.card-stats .stats-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.analytics-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.stat-box {
+  background: var(--bg-page);
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.chart-wrap {
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+/* 复盘三栏 */
+.review-three {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.review-block h3 {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 0.5rem 0;
+}
+
+.review-block .review-box {
+  min-height: 80px;
+}
+
+@media (max-width: 720px) {
+  .review-three {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 番茄钟 */
+.card-pomodoro .pomodoro-display {
+  font-size: 2.5rem;
+  font-weight: 600;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  margin: 0.5rem 0;
+}
+
+.pomodoro-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+/* 列表 */
+.goal-list,
+.assignment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0 0;
+  font-size: 0.9375rem;
+}
+
+.goal-list li,
+.assignment-list li {
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.team-grid {
+  margin-top: 0.75rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.section-mini-title {
+  margin: 0.25rem 0 0.5rem 0;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+#report-content:empty::before {
+  content: "点击「学习周报」或「学习月报」后，这里显示数据分析报告。";
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* 教练框 */
+.coach-box {
+  margin-top: 1rem;
+}
+
+/* 文件输入 */
+.form-row input[type="file"] {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem;
+}
+
+/* AI Agent 布局 */
+.agent-plan-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 160px;
+  align-items: stretch;
+}
+
+.agent-action-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.agent-action-row .btn {
+  min-width: 130px;
+}
+
+#agent-output {
+  margin-top: 0.75rem;
+}
+
+/* 团队协作布局 */
+.team-row {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.team-row-create {
+  grid-template-columns: minmax(0, 1fr) 160px;
+}
+
+.team-row-member,
+.team-row-task {
+  grid-template-columns: minmax(220px, 0.9fr) minmax(220px, 1fr) 160px;
+}
+
+.team-row .btn {
+  width: 100%;
+}
+
+/* FullCalendar 覆盖 */
+#calendar .fc-event-title.completed {
+  text-decoration: line-through;
+  opacity: 0.8;
+}
+
+.auth-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.auth-modal.show {
+  display: flex;
+}
+
+.auth-dialog {
+  max-width: 420px;
+  width: 100%;
+}
+
+.auth-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.auth-error {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: #b91c1c;
+}
+
+#calendar .fc-toolbar.fc-header-toolbar {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+#calendar .fc-toolbar-chunk {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#calendar .fc-toolbar-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+#calendar .fc-button {
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+}
+
+#calendar .fc-button-primary {
+  background: var(--bg-page);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+#calendar .fc-button-primary.fc-button-active,
+#calendar .fc-button-primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+@media (max-width: 720px) {
+  #calendar .fc-toolbar.fc-header-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  #calendar .fc-toolbar-chunk {
+    justify-content: space-between;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .agent-plan-row,
+  .team-row-create,
+  .team-row-member,
+  .team-row-task {
+    grid-template-columns: 1fr;
+  }
+
+  .agent-action-row .btn {
+    min-width: 0;
+    flex: 1 1 calc(50% - 0.5rem);
+  }
+}
