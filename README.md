@@ -1,5 +1,6 @@
 # AI Study System
 
+（Vibe coding纯娱乐瞎玩）
 一个基于 FastAPI + SQLite + 原生前端的 AI 学习系统，支持任务管理、学习分析、AI 辅助和团队协作。
 
 ## 功能特性
@@ -139,7 +140,3 @@ python -m pip install -r requirements.txt
 
 - 检查 `OPENAI_API_KEY`
 - 检查 `OPENAI_BASE_URL`
-
-## License
-
-MIT
