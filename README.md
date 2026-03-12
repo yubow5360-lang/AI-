@@ -140,6 +140,3 @@ python -m pip install -r requirements.txt
 - 检查 `OPENAI_API_KEY`
 - 检查 `OPENAI_BASE_URL`
 
-## License
-
-MIT
